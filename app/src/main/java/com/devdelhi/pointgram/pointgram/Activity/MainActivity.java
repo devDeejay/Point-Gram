@@ -24,6 +24,9 @@ import android.widget.Toast;
 import com.devdelhi.pointgram.pointgram.R;
 import com.devdelhi.pointgram.pointgram.Services.Service_GPS;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionPagerAdapter;
     private TabLayout mTabLayout;
+    private DatabaseReference muserRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity__main);
 
         mAuth = FirebaseAuth.getInstance();
+        muserRef = FirebaseDatabase.getInstance().getReference().child("users_database").child(mAuth.getCurrentUser().getUid());
 
         if (!isUserSignedIn()) {
             startActivity(new Intent(MainActivity.this, Activity_Start.class));
@@ -145,6 +150,20 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
 
+        FirebaseUser mCurrentUser = mAuth.getCurrentUser();
+        if (mCurrentUser == null) {
+            startActivity(new Intent(MainActivity.this, Activity_Start.class));
+        }
+        else {
+            muserRef.child("online").setValue(true);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        muserRef.child("online").setValue(false);
     }
 
     private boolean checkRunTimePermissions() {

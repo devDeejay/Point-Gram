@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.devdelhi.pointgram.pointgram.Model.friends;
@@ -88,10 +89,15 @@ public class Activity_Friends extends AppCompatActivity {
                         name = dataSnapshot.child("user_name").getValue().toString();
                         status = dataSnapshot.child("user_status").getValue().toString();
                         image = dataSnapshot.child("user_thumbnail").getValue().toString();
+                        Boolean userOnline = false;
+                        if (dataSnapshot.hasChild("online")) {
+                            userOnline = (Boolean) dataSnapshot.child("online").getValue();
+                        }
 
                         holder.setName(name);
                         holder.setStatus(status);
                         holder.setThumbnailImage(image, getApplicationContext());
+                        holder.setUserOnline(userOnline);
 
                         Log.d(TAG, name);
                         Log.d(TAG, status);
@@ -182,6 +188,16 @@ public class Activity_Friends extends AppCompatActivity {
 
         public void setDate(String date) {
             this.date = date;
+        }
+
+        public void setUserOnline(Boolean userOnline) {
+            ImageView userOnlineView = mView.findViewById(R.id.onelineStatus);
+            if (userOnline) {
+                userOnlineView.setVisibility(View.VISIBLE);
+            }
+            else {
+                userOnlineView.setVisibility(View.INVISIBLE);
+            }
         }
     }
 }
