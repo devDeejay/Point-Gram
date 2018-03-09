@@ -79,6 +79,16 @@ public class Activity_Create_Alarm extends AppCompatActivity {
                 }
             }
         });
+
+        addFriendsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Activity_Create_Alarm.this, Activity_Friends.class);
+                startActivityForResult(intent, 2);
+
+            }
+        });
     }
 
     private void processDataForAlarm(String name, String desc, String range, String userID) {
@@ -130,6 +140,10 @@ public class Activity_Create_Alarm extends AppCompatActivity {
                 lng = place.getLatLng().longitude;
                 alarmPlace.setText(nameOfPlaceSelected);
             }
+        }
+
+        else if (requestCode == 2) {
+            String message=data.getStringExtra("MESSAGE");
         }
     }
 }

@@ -5,7 +5,6 @@
     android:layout_marginBottom="2dp"
     android:background="@color/whiteColor"
     android:orientation="vertical"
-    android:layout_margin="10dp"
     android:padding="10dp">
 
     <TextView
@@ -42,5 +41,11 @@
         android:layout_marginTop="10dp"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc"
+        android:layout_marginTop="10dp"/>
 
 </LinearLayout>

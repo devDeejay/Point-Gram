@@ -181,6 +181,10 @@ public class Activity_PreviewAlarm extends AppCompatActivity implements OnMapRea
                 if (task.isComplete()) {
                     mProgressDialog.dismiss();
                     showSnackBarMessage("Alarm Saved Successfully");
+
+                    Intent intent = new Intent(Activity_PreviewAlarm.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                     finish();
                 }
                 else {

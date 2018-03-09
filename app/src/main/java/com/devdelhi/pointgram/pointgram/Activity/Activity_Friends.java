@@ -26,6 +26,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Activity_Friends extends AppCompatActivity {
@@ -38,12 +41,14 @@ public class Activity_Friends extends AppCompatActivity {
     private String name,status,image;
     private String date;
     private String TAG = "DEEJAY_FRIENDS";
+    private ArrayList<String> usernames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
 
+        usernames = new ArrayList<>();
         mFriendsList = findViewById(R.id.all_friends_recyclerView);
         mToolbar = findViewById(R.id.friends_activity_toolbar);
         setSupportActionBar(mToolbar);
@@ -127,6 +132,10 @@ public class Activity_Friends extends AppCompatActivity {
 
         mFriendsList.setAdapter(adapter);
         adapter.startListening();
+
+        Intent intent = new Intent();
+        intent.putExtra("FriendsLisst", usernames);
+        setResult(2,intent);
     }
 
     @Override

@@ -7,6 +7,7 @@ package com.devdelhi.pointgram.pointgram.Model;
 public class friends {
 
     String date;
+    boolean isSelected;
 
     public String getDate() {
         return date;
@@ -20,5 +21,13 @@ public class friends {
 
     friends(String date) {
         this.date = date;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }
