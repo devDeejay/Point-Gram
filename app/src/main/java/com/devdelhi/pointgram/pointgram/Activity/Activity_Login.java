@@ -98,7 +98,7 @@ public class Activity_Login extends AppCompatActivity {
 
                             String currentUserId = mAuth.getCurrentUser().getUid();
                             String deviceToken = FirebaseInstanceId.getInstance().getToken();
-                            mUserDatabase.child("users_database").child(currentUserId).child("Device_Token").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            mUserDatabase.child("users_database").child(currentUserId).child("device_token").setValue(deviceToken).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "signInWithEmail:success");

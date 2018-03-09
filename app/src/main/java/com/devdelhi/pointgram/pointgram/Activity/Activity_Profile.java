@@ -96,6 +96,7 @@ public class Activity_Profile extends AppCompatActivity {
         mFriendRequestReceivedDatabase.keepSynced(true);
         mFriendDatabase.keepSynced(true);
 
+        //Getting Details Of User To Display In Profile Page
         mUsersDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -112,7 +113,7 @@ public class Activity_Profile extends AppCompatActivity {
                 mFriendRequestSentDatabase.child(mCurrentUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.hasChild(userID)) {
+                        if (dataSnapshot.hasChild(userID)) { //This user has sent request to this user.
                             currentFriendsState = REQUEST_SENT;
                             addRemoveFriendsButton.setText("Cancel Friend Request");
                         }
@@ -129,7 +130,7 @@ public class Activity_Profile extends AppCompatActivity {
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
-
+                                        showSnackBarMessage("Something Went Wrong!");
                                 }
                             });
                         }
@@ -137,7 +138,7 @@ public class Activity_Profile extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        showSnackBarMessage("Something Went Wrong!");
                     }
                 });
 
@@ -145,11 +146,10 @@ public class Activity_Profile extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.hasChild(userID)) {
-
+                            //User Has Received Request From This User
                             currentFriendsState = REQUEST_RECEIVED;
                             addRemoveFriendsButton.setText("Accept Friend Request");
                             declineRequestButton.setAlpha(1f);
-
                         }
 
                         else {
@@ -164,7 +164,7 @@ public class Activity_Profile extends AppCompatActivity {
 
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
-
+                                    showSnackBarMessage("Something Went Wrong!");
                                 }
                             });
                         }
@@ -173,6 +173,7 @@ public class Activity_Profile extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
+                        showSnackBarMessage("Something Went Wrong!");
                         mProgressDialog.dismiss();
                     }
                 });
@@ -256,40 +257,52 @@ public class Activity_Profile extends AppCompatActivity {
 
                 else if (currentFriendsState == REQUEST_RECEIVED) {
                     final String currentDate = DateFormat.getDateTimeInstance().format(new Date());
-                    mFriendDatabase.child(mCurrentUser.getUid()).child(userID).setValue("Friends Since" + currentDate).
-                            addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    mFriendDatabase.child(mCurrentUser.getUid()).child(userID).setValue("Friends Since" + currentDate).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            mFriendRequestSentDatabase.child(mCurrentUser.getUid()).child(userID).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                @Override
-                                                public void onSuccess(Void aVoid) {
-                                                    mFriendRequestReceivedDatabase.child(userID).child(mCurrentUser.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
-                                                            addRemoveFriendsButton.setEnabled(true);
-                                                            currentFriendsState = FRIENDS;
-                                                            declineRequestButton.setAlpha(0f);
-                                                            addRemoveFriendsButton.setText("UnFriend " + FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-                                                            mProgressDialog.dismiss();
-                                                        }
-                                                    });
-                                                }
-                                            });
+
+                    Map friendMap = new HashMap();
+                    friendMap.put("friends/" + mCurrentUser.getUid() + "/" + userID + "/date", currentDate);
+                    friendMap.put("friends/" + userID + "/" + mCurrentUser.getUid() + "/date", currentDate);
+
+                    final Map requestMap = new HashMap();
+                    requestMap.put("friend_requests/received/" + mCurrentUser.getUid() + "/" + userID + "/request_type", null);
+                    requestMap.put("friend_requests/sent/" + userID + "/" + mCurrentUser.getUid() + "/request_type", null);
+
+                    //Adding Friends To Database
+
+                    mRootDatabaseReference.updateChildren(friendMap, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError == null) {
+
+                                //Removing Requests From Database
+
+                                mRootDatabaseReference.updateChildren(requestMap, new DatabaseReference.CompletionListener() {
+                                    @Override
+                                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                                        if (databaseError == null) {
+                                            currentFriendsState = FRIENDS;
+                                            declineRequestButton.setAlpha(0);
+                                            addRemoveFriendsButton.setText("Unfriend This Person");
                                         }
-                                    });
-                                }
-                            });
+                                        else {
+                                            showSnackBarMessage("Cannot Add The User Right Now, Please Try Again Later");
+                                        }
+                                    }
+                                });
+                            }
+                            else {
+                                showSnackBarMessage("Cannot Add The User Right Now, Please Try Again Later");
+                            }
+                        }
+                    });
+                    mProgressDialog.dismiss();
                 }
 
                 else if (currentFriendsState == FRIENDS) {
-                    showSnackBarMessage("Trying To Un friend The User");
+                    showSnackBarMessage("Trying To Unfriend The User");
 
                     Map unfriendMap = new HashMap();
-                    unfriendMap.put("friends/" + mCurrentUser.getUid() + "/" + userID, null);
-                    unfriendMap.put("friends/" + userID + "/" + mCurrentUser.getUid(), null);
+                    unfriendMap.put("friends/" + mCurrentUser.getUid() + "/" + userID + "/date", null);
+                    unfriendMap.put("friends/" + userID + "/" + mCurrentUser.getUid() + "/date", null);
 
                     mRootDatabaseReference.updateChildren(unfriendMap, new DatabaseReference.CompletionListener() {
                         @Override
@@ -319,7 +332,7 @@ public class Activity_Profile extends AppCompatActivity {
                 mFriendRequestSentDatabase.child(userID).child(mCurrentUser.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        mFriendRequestReceivedDatabase.child(userID).child(mCurrentUser.getUid()).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                        mFriendRequestReceivedDatabase.child(mCurrentUser.getUid()).child(userID).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 addRemoveFriendsButton.setEnabled(true);

@@ -32,6 +32,7 @@ public class Activity_All_Users extends AppCompatActivity {
     private DatabaseReference mUserDatabase;
     private FirebaseRecyclerAdapter adapter;
     private String name,status,image;
+    private String TAG = "Friends";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +72,7 @@ public class Activity_All_Users extends AppCompatActivity {
                 holder.setName(name);
                 holder.setStatus(status);
                 holder.setThumbnailImage(image, getApplicationContext());
+
 
                 final String userID = getRef(position).getKey();
 

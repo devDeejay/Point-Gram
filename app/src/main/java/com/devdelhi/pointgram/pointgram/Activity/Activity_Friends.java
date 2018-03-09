@@ -1,18 +1,19 @@
-package com.devdelhi.pointgram.pointgram.Fragments;
+package com.devdelhi.pointgram.pointgram.Activity;
 
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.devdelhi.pointgram.pointgram.Activity.Activity_Friends;
-import com.devdelhi.pointgram.pointgram.Activity.Activity_Profile;
 import com.devdelhi.pointgram.pointgram.Model.friends;
 import com.devdelhi.pointgram.pointgram.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -24,33 +25,38 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Fragment_Requests extends Fragment {
+public class Activity_Friends extends AppCompatActivity {
 
-    private RecyclerView mFriendRequestsList;
-    private DatabaseReference mFriendRequestsDatabase;
+    private Toolbar mToolbar;
+    private RecyclerView mFriendsList;
+    private DatabaseReference mFriendsDatabase;
     private DatabaseReference mUsersDatabase;
     private FirebaseRecyclerAdapter adapter;
     private String name,status,image;
     private String date;
     private String TAG = "DEEJAY_FRIENDS";
 
-    public Fragment_Requests() {
-        // Required empty public constructor
-    }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_requests, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_friends);
 
-        mFriendRequestsList = view.findViewById(R.id.friendRequestsRecyclerView);
-        mFriendRequestsDatabase = FirebaseDatabase.getInstance().getReference().child("friend_requests").child("received").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        mFriendsList = findViewById(R.id.all_friends_recyclerView);
+        mToolbar = findViewById(R.id.friends_activity_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Your Friends");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("friends").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("users_database");
-        mFriendRequestsList.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext()));
+        Log.d("HEY", mFriendsDatabase +"");
 
-        Query query = mFriendRequestsDatabase.limitToLast(10);
+        mFriendsList.setLayoutManager(new LinearLayoutManager(this));
+
+        Query query = mFriendsDatabase.limitToLast(10);
 
         Log.d("HEY", query+"");
 
@@ -63,7 +69,7 @@ public class Fragment_Requests extends Fragment {
 
         adapter = new FirebaseRecyclerAdapter<friends, Activity_Friends.UserViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull final Activity_Friends.UserViewHolder holder, int position, @NonNull friends model) {
+            protected void onBindViewHolder(@NonNull final UserViewHolder holder, int position, @NonNull friends model) {
 
                 date = model.getDate();
 
@@ -80,7 +86,7 @@ public class Fragment_Requests extends Fragment {
 
                         holder.setName(name);
                         holder.setStatus(status);
-                        holder.setThumbnailImage(image, getActivity().getApplicationContext());
+                        holder.setThumbnailImage(image, getApplicationContext());
 
                         Log.d(TAG, name);
                         Log.d(TAG, status);
@@ -98,7 +104,7 @@ public class Fragment_Requests extends Fragment {
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Intent intent = new Intent(getActivity(), Activity_Profile.class);
+                        Intent intent = new Intent(Activity_Friends.this, Activity_Profile.class);
                         intent.putExtra("UserID", userID);
                         startActivity(intent);
                     }
@@ -119,14 +125,54 @@ public class Fragment_Requests extends Fragment {
             }
         };
 
-        mFriendRequestsList.setAdapter(adapter);
+        mFriendsList.setAdapter(adapter);
         adapter.startListening();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
+    }
 
+    public static class UserViewHolder extends RecyclerView.ViewHolder {
+        public View mView;
+        private String date;
+        private String TAG = "DEEJAY_FRIENDS";
 
+        public UserViewHolder(View itemView) {
+            super(itemView);
+            mView = itemView;
+        }
 
+        public void setName(String name) {
+            TextView userNameTV = mView.findViewById(R.id.nameTV);
+            userNameTV.setText(name);
+            Log.d(TAG, "Setting Satus " + name);
+        }
 
-        return view;
+        public void setStatus(String user_stas) {
+            TextView statusTextView = mView.findViewById(R.id.statusTV);
+            statusTextView.setText(user_stas);
+            Log.d(TAG, "Setting Satus " + user_stas);
+        }
+
+        public void setThumbnailImage(String user_image, Context applicationContext) {
+            CircleImageView circleImageView = mView.findViewById(R.id.profileImageView);
+            Picasso.with(applicationContext).load(user_image).placeholder(R.drawable.avatar).into(circleImageView);
+
+            Log.d(TAG, "Setting Satus " + user_image);
+
+        }
+
+        public void setDate(String date) {
+            this.date = date;
+        }
     }
 }

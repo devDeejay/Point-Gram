@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, Activity_Start.class));
         }
         else if (item.getItemId() == R.id.account_settings) {
-            startActivity(new Intent(MainActivity.this, Activity_Account_Settings.class));
+            startActivity(new Intent(MainActivity.this, Activity_Friends.class));
         }
         else if (item.getItemId() == R.id.all_users) {
             startActivity(new Intent(MainActivity.this, Activity_All_Users.class));
