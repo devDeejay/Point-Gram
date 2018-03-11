@@ -83,21 +83,22 @@ public class Activity_Friends extends AppCompatActivity {
 
                 final String userID = getRef(position).getKey();
 
-                mUsersDatabase.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                mUsersDatabase.child(userID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         name = dataSnapshot.child("user_name").getValue().toString();
                         status = dataSnapshot.child("user_status").getValue().toString();
                         image = dataSnapshot.child("user_thumbnail").getValue().toString();
-                        Boolean userOnline = false;
+
                         if (dataSnapshot.hasChild("online")) {
-                            userOnline = (Boolean) dataSnapshot.child("online").getValue();
+                            String userOnline = dataSnapshot.child("online").getValue().toString();
+                            holder.setUserOnline(userOnline);
                         }
 
                         holder.setName(name);
                         holder.setStatus(status);
                         holder.setThumbnailImage(image, getApplicationContext());
-                        holder.setUserOnline(userOnline);
+
 
                         Log.d(TAG, name);
                         Log.d(TAG, status);
@@ -169,13 +170,13 @@ public class Activity_Friends extends AppCompatActivity {
         public void setName(String name) {
             TextView userNameTV = mView.findViewById(R.id.nameTV);
             userNameTV.setText(name);
-            Log.d(TAG, "Setting Satus " + name);
+            Log.d(TAG, "Setting Status " + name);
         }
 
         public void setStatus(String user_stas) {
             TextView statusTextView = mView.findViewById(R.id.statusTV);
             statusTextView.setText(user_stas);
-            Log.d(TAG, "Setting Satus " + user_stas);
+            Log.d(TAG, "Setting Status " + user_stas);
         }
 
         public void setThumbnailImage(String user_image, Context applicationContext) {
@@ -190,9 +191,10 @@ public class Activity_Friends extends AppCompatActivity {
             this.date = date;
         }
 
-        public void setUserOnline(Boolean userOnline) {
+        public void setUserOnline(String userOnline) {
             ImageView userOnlineView = mView.findViewById(R.id.onelineStatus);
-            if (userOnline) {
+            if (userOnline.equals("true")) {
+                Log.d(TAG, "User Online " + userOnline);
                 userOnlineView.setVisibility(View.VISIBLE);
             }
             else {

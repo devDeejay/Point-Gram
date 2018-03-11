@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorPrimary"
+    android:layout_width="match_parent"
+    android:padding="5dp"
+    android:layout_height="50dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:textSize="18sp"
+        android:text="Dhananjay Trivedi"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/whiteColor"
+        android:layout_height="wrap_content"
+        android:id="@+id/chatUsernameChatbar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/chatUserOnlineStatus"
+        android:layout_alignStart="@+id/chatUsernameChatbar"
+        android:text="Online"
+        android:textColor="@color/whiteColor" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/chatCustomBarImage"
+        android:layout_width="36dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/avatar" />
+
+</RelativeLayout>

@@ -55,7 +55,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".Activity.Activity_Friends"></activity>
+        <activity android:name=".Activity.Activity_Friends" />
+        <activity android:name=".Activity.Activity_Chat"></activity>
     </application>
 
 </manifest>

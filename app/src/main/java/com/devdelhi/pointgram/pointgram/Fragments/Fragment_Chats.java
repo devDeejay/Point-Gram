@@ -1,5 +1,6 @@
 package com.devdelhi.pointgram.pointgram.Fragments;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.devdelhi.pointgram.pointgram.Activity.Activity_All_Users;
+import com.devdelhi.pointgram.pointgram.Activity.Activity_Chat;
 import com.devdelhi.pointgram.pointgram.Activity.Activity_Friends;
 import com.devdelhi.pointgram.pointgram.Activity.Activity_Profile;
 import com.devdelhi.pointgram.pointgram.Model.friends;
@@ -44,12 +46,10 @@ public class Fragment_Chats extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chats, container, false);
-
 
         mFriendsList = view.findViewById(R.id.all_friends_recyclerView);
         mFriendsDatabase = FirebaseDatabase.getInstance().getReference().child("friends").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -58,14 +58,10 @@ public class Fragment_Chats extends Fragment {
 
         Query query = mFriendsDatabase.limitToLast(10);
 
-        Log.d("HEY", query+"");
-
         FirebaseRecyclerOptions<friends> options =
                 new FirebaseRecyclerOptions.Builder<friends>()
                         .setQuery(query, friends.class)
                         .build();
-
-        Log.d("HEY", options+"");
 
         adapter = new FirebaseRecyclerAdapter<friends, Activity_Friends.UserViewHolder>(options) {
             @Override
@@ -77,21 +73,31 @@ public class Fragment_Chats extends Fragment {
 
                 final String userID = getRef(position).getKey();
 
-                mUsersDatabase.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                mUsersDatabase.child(userID).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         name = dataSnapshot.child("user_name").getValue().toString();
                         status = dataSnapshot.child("user_status").getValue().toString();
                         image = dataSnapshot.child("user_thumbnail").getValue().toString();
+                        if (dataSnapshot.hasChild("online")) {
+                            String userOnline = dataSnapshot.child("online").getValue().toString();
+                            holder.setUserOnline(userOnline);
+                        }
 
                         holder.setName(name);
                         holder.setStatus(status);
                         holder.setThumbnailImage(image, getActivity().getApplicationContext());
 
-                        Log.d(TAG, name);
-                        Log.d(TAG, status);
-                        Log.d(TAG, image);
-                        Log.d(TAG, "Done!");
+                        holder.mView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(getActivity(), Activity_Chat.class);
+                                intent.putExtra("userID", userID);
+                                intent.putExtra("userName", name);
+                                intent.putExtra("userImage", image);
+                                startActivity(intent);
+                            }
+                        });
 
                     }
 
@@ -100,23 +106,10 @@ public class Fragment_Chats extends Fragment {
 
                     }
                 });
-
-                holder.mView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(getActivity(), Activity_Profile.class);
-                        intent.putExtra("UserID", userID);
-                        startActivity(intent);
-                    }
-                });
             }
 
             @Override
             public Activity_Friends.UserViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                // Create a new instance of the ViewHolder, in this case we are using a custom
-                // layout called R.layout.message for each item
-
-                Log.d("HEY", "OnCreateViewHolder : " + "Working");
 
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.single_list_item_user, parent, false);

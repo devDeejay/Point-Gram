@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#dddddd"
+    tools:context="com.devdelhi.pointgram.pointgram.Activity.Activity_Chat">
+
+    <include layout="@layout/app_bar_layout" android:id="@+id/chat_app_bar"/>
+
+    <LinearLayout
+        android:background="@color/whiteColor"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="50dp">
+        
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:src="@drawable/ic_action_add"
+            android:id="@+id/attachImagesTV"
+            android:layout_height="match_parent" />
+        
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:gravity="center_vertical"
+            android:textSize="18sp"
+            android:id="@+id/chatTextTV"
+            android:padding="5dp"
+            android:layout_height="match_parent"
+            android:text="Text"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:id="@+id/sendTextIV"
+            android:src="@drawable/ic_action_send"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</RelativeLayout>
