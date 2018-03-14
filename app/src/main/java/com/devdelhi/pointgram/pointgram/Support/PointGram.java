@@ -20,24 +20,26 @@ public class PointGram extends Application {
     public void onCreate() {
         super.onCreate();
 
+        mAuth = FirebaseAuth.getInstance();
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
-        mAuth = FirebaseAuth.getInstance();
-        mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users_database").child(mAuth.getCurrentUser().getUid());
+        if (mAuth.getCurrentUser() != null) {
+            mAuth = FirebaseAuth.getInstance();
+            mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users_database").child(mAuth.getCurrentUser().getUid());
 
-        mUserDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot != null) {
-                    mUserDatabase.child("online").onDisconnect().setValue(ServerValue.TIMESTAMP);
+            mUserDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot != null) {
+                        mUserDatabase.child("online").onDisconnect().setValue(ServerValue.TIMESTAMP);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-
+                }
+            });
+        }
     }
 }

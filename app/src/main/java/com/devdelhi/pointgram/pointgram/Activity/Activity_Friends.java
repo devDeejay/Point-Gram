@@ -52,6 +52,7 @@ public class Activity_Friends extends AppCompatActivity {
         usernames = new ArrayList<>();
         mFriendsList = findViewById(R.id.all_friends_recyclerView);
         mToolbar = findViewById(R.id.friends_activity_toolbar);
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Your Friends");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -141,7 +142,7 @@ public class Activity_Friends extends AppCompatActivity {
         adapter.startListening();
 
         Intent intent = new Intent();
-        intent.putExtra("FriendsLisst", usernames);
+        intent.putExtra("FriendsList", usernames);
         setResult(2,intent);
     }
 

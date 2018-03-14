@@ -65,7 +65,7 @@ public class Fragment_Chats extends Fragment {
 
         adapter = new FirebaseRecyclerAdapter<friends, Activity_Friends.UserViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull final Activity_Friends.UserViewHolder holder, int position, @NonNull friends model) {
+            protected void onBindViewHolder(@NonNull final Activity_Friends.UserViewHolder holder, final int position, @NonNull friends model) {
 
                 date = model.getDate();
 
@@ -79,6 +79,7 @@ public class Fragment_Chats extends Fragment {
                         name = dataSnapshot.child("user_name").getValue().toString();
                         status = dataSnapshot.child("user_status").getValue().toString();
                         image = dataSnapshot.child("user_thumbnail").getValue().toString();
+
                         if (dataSnapshot.hasChild("online")) {
                             String userOnline = dataSnapshot.child("online").getValue().toString();
                             holder.setUserOnline(userOnline);
@@ -93,8 +94,9 @@ public class Fragment_Chats extends Fragment {
                             public void onClick(View view) {
                                 Intent intent = new Intent(getActivity(), Activity_Chat.class);
                                 intent.putExtra("userID", userID);
-                                intent.putExtra("userName", name);
-                                intent.putExtra("userImage", image);
+                                Log.d(TAG, "Clicked on userID " + userID);
+/*                                intent.putExtra("userName", name);
+                                intent.putExtra("userImage", image);*/
                                 startActivity(intent);
                             }
                         });

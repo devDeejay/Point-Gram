@@ -73,7 +73,6 @@ public class Activity_All_Users extends AppCompatActivity {
                 holder.setStatus(status);
                 holder.setThumbnailImage(image, getApplicationContext());
 
-
                 final String userID = getRef(position).getKey();
 
                 holder.mView.setOnClickListener(new View.OnClickListener() {

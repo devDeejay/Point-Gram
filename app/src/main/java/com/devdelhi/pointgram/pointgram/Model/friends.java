@@ -7,6 +7,7 @@ package com.devdelhi.pointgram.pointgram.Model;
 public class friends {
 
     String date;
+
     boolean isSelected;
 
     public String getDate() {
