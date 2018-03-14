@@ -28,8 +28,19 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:backgroundTint="@color/colorAccent"
-        android:padding="20dp"
-        android:text="Show Me On Map"
+        android:padding="10dp"
+        android:text="Start Service"
+        android:textColor="@color/whiteColor" />
+
+    <Button
+        android:id="@+id/stopServiceButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/startMapForUser"
+        android:layout_alignParentStart="true"
+        android:backgroundTint="@color/colorAccent"
+        android:padding="10dp"
+        android:text="Stop Service"
         android:textColor="@color/whiteColor" />
 
 </RelativeLayout>

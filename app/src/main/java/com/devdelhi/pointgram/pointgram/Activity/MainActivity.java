@@ -65,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Point Gram");
 
-
         //TABS
 
         mViewPager = findViewById(R.id.view_pager);
@@ -76,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
         mViewPager.setAdapter(mSectionPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
-
     }
 
     private void askForPermission(String permission, Integer requestCode) {
@@ -199,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == 100) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                //enableButtons();
+
             }
             else {
                 checkRunTimePermissions();

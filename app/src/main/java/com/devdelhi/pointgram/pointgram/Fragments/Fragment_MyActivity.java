@@ -18,11 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.devdelhi.pointgram.pointgram.Activity.Activity_Create_Alarm;
 import com.devdelhi.pointgram.pointgram.Activity.Activity_Maps;
 import com.devdelhi.pointgram.pointgram.Manifest;
 import com.devdelhi.pointgram.pointgram.R;
+import com.devdelhi.pointgram.pointgram.Services.LocationService;
 import com.devdelhi.pointgram.pointgram.Services.Service_GPS;
 
 
@@ -50,22 +52,29 @@ public class Fragment_MyActivity extends Fragment {
                 @Override
                 public void onReceive(Context context, Intent intent) {
 
-                    Bundle bundle = intent.getExtras();
-
                     String lat,lng;
                     lat = intent.getStringExtra("lat");
                     lng = intent.getStringExtra("lng");
 
                     Log.d("DEEJAY", "Got Data" + lat + " " + lng);
                     coordinatesTextView.append("\n" + lat + " , " + lng);
+
                 }
             };
         }
 
-        getActivity().registerReceiver(broadcastReceiver, new IntentFilter("User_Update")); // Calls onReceive Method
+        getActivity().registerReceiver(broadcastReceiver, new IntentFilter("User_Update"));
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if (broadcastReceiver != null) {
+            getActivity().unregisterReceiver(broadcastReceiver);
+        }
+    }
 
     private void getLocationPermissions() {
         String[] permissions = {android.Manifest.permission.ACCESS_FINE_LOCATION,
@@ -115,6 +124,7 @@ public class Fragment_MyActivity extends Fragment {
         View view = inflater.inflate(R.layout.fragment_my_activity, container, false);
         coordinatesTextView = view.findViewById(R.id.coordinatesTextView);
         Button myCustomButton = view.findViewById(R.id.startMapForUser);
+        Button stopServiceButton = view.findViewById(R.id.stopServiceButton);
 
         getLocationPermissions();
 
@@ -124,14 +134,22 @@ public class Fragment_MyActivity extends Fragment {
 
                 if (mLocationPermissionGranted) {
                     startLocationService();
-                    Intent firstpage = new Intent(getActivity(),Activity_Maps.class);
-                    getActivity().startActivity(firstpage);
+                    //Intent firstpage = new Intent(getActivity(),Activity_Maps.class);
+                    //getActivity().startActivity(firstpage);
                 }
                 else {
                     getLocationPermissions();
                     Snackbar snackbar = Snackbar.make(getActivity().findViewById(android.R.id.content), "Please Grant The Permissions.", Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }
+            }
+        });
+
+        stopServiceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), LocationService.class);
+                getActivity().stopService(intent);
             }
         });
 
@@ -162,7 +180,7 @@ public class Fragment_MyActivity extends Fragment {
     }
 
     public void startLocationService() {
-        Intent intent = new Intent(getActivity(), Service_GPS.class);
+        Intent intent = new Intent(getActivity(), LocationService.class);
         getActivity().startService(intent);
     }
 }

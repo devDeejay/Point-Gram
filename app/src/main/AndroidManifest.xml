@@ -26,11 +26,8 @@
             </intent-filter>
         </activity>
 
-        <!--
-        <activity
-            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat" />  optional (needed if default theme has no action bar)
-        -->
+        <service android:name=".Services.Service_GPS" />
+        <service android:name=".Services.LocationService" />
 
         <activity android:name=".Activity.Activity_Start" />
         <activity android:name=".Activity.Activity_Maps" />

@@ -137,6 +137,7 @@ public class Activity_SignUp extends AppCompatActivity {
         usermap.put("user_status", "Hey There, I am on Point Gram.");
         usermap.put("user_image", "Default");
         usermap.put("user_thumbnail", "Default");
+        usermap.put("lat_lng", "NA");
         usermap.put("device_token", deviceToken);
 
         mProgressDialog.dismiss();

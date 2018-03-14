@@ -13,11 +13,22 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class Service_GPS extends Service {
 
-    private static final String TAG = "DEEJAY";
+    private static final String TAG = "SERVICEDJ";
     private LocationListener locationListener;
     private LocationManager locationManager;
+    private FirebaseAuth mAuth;
+    private DatabaseReference muserRef;
 
     @Nullable
     @Override
@@ -36,26 +47,7 @@ public class Service_GPS extends Service {
             @Override
             public void onLocationChanged(Location location) {
                 //On Location Being Changed
-                Double lat = location.getLatitude();
-                Double lng = location.getLongitude();
-                Double alt = location.getAltitude();
-                float acc = location.getAccuracy();
-                float speed = location.getSpeed();
-                String provider = location.getProvider();
 
-                //3 Step Process Sending Data back to Main Activity Using Broadcast Receiver
-                //1.Create Intent
-                Intent intent = new Intent("User_Update");
-                intent.putExtra("lat", lat+"");
-                intent.putExtra("lng", lng+"");
-                Log.d(TAG, "Sent Data " + lat + " , " + lng);
-
-                ///Log.d(TAG,  "Lat " + lat + " Lng " + lng + " Alt " + alt + " Acc " + acc + " Speed " + speed + " Provider " + provider);
-
-                //3.Send As Broadcast
-                sendBroadcast(intent);
-
-                Log.d(TAG, "-------Broadcast Sent From GPS Service------");
  }
 
             @Override
