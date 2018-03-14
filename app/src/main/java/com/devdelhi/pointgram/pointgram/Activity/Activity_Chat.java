@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.devdelhi.pointgram.pointgram.Model.messages;
@@ -35,6 +37,7 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,10 +68,16 @@ public class Activity_Chat extends AppCompatActivity {
 
     private FirebaseRecyclerAdapter messageAdapter;
 
+    int posn;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private static final int TOTAL_ITEMS_TO_LOAD = 100;
+    private int mCurrentPage = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__chat);
+
 
         mChatUser = getIntent().getStringExtra("userID");
         mCurrentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -91,6 +100,8 @@ public class Activity_Chat extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
 
+        swipeRefreshLayout = findViewById(R.id.swipeMessageRefreshLayout);
+
         mMessagesList = findViewById(R.id.messagesList);
 
         mRootDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -110,7 +121,8 @@ public class Activity_Chat extends AppCompatActivity {
         mChatAddButton = findViewById(R.id.attachImagesTV);
         mChatMessageView = findViewById(R.id.chatMessageET);
 
-        Query query = mMessageDatabaseForUser.limitToLast(30);
+
+        Query query = mMessageDatabaseForUser.limitToLast(mCurrentPage * TOTAL_ITEMS_TO_LOAD);
         Log.d(TAG, "Query " + query);
 
         FirebaseRecyclerOptions<messages> options =
@@ -120,6 +132,12 @@ public class Activity_Chat extends AppCompatActivity {
 
         Log.d(TAG, "Options " + options);
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         messageAdapter = new FirebaseRecyclerAdapter<messages, Activity_Chat.MessageViewHolder>(options) {
 
@@ -130,24 +148,23 @@ public class Activity_Chat extends AppCompatActivity {
                 Boolean seen = model.getSeen();
                 String type = model.getType();
                 long time = model.getTime();
-                String from = "";
-                from = model.getFrom();
+                String from = model.getFrom();
+                ;
 
                 if (from != null) {
                     if (from.equals(mCurrentUserID)) {
-                        holder.setPropertiesForCurrentUser();
+                        holder.setMessageForSender(messageText, seen, type, time, getApplicationContext());
                     }else if (from.equals(mChatUser)) {
-                        holder.setPropertiesForOtherUser();
+                        holder.setMessageForChatUser(messageText, seen, type, time, getApplicationContext());
                     }
                 }
-
-                holder.setMessageText(messageText);
 
                 Log.d(TAG, "Message : " + messageText);
                 Log.d(TAG, "Seen : " + seen);
                 Log.d(TAG, "Type : " + type);
                 Log.d(TAG, "Time : " + time);
 
+                posn = position;
             }
 
             @Override
@@ -157,7 +174,10 @@ public class Activity_Chat extends AppCompatActivity {
 
                 return new Activity_Chat.MessageViewHolder(view);
             }
+
         };
+
+        mMessagesList.scrollToPosition(posn);
 
         //loadMessages();
 
@@ -167,8 +187,7 @@ public class Activity_Chat extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mChatUserName = dataSnapshot.child("user_name").getValue().toString();
-                userImage = dataSnapshot.child("user_image").getValue().toString();
-                userImage = dataSnapshot.child("user_image").getValue().toString();
+                userImage = dataSnapshot.child("user_thumbnail").getValue().toString();
                 String online = dataSnapshot.child("online").getValue().toString();
 
                 if (online.equals("true")) {
@@ -253,42 +272,56 @@ public class Activity_Chat extends AppCompatActivity {
         messageAdapter.startListening();
     }
 
-    public static class MessageViewHolder extends RecyclerView.ViewHolder {
+    public class MessageViewHolder extends RecyclerView.ViewHolder {
         public View mView;
-        TextView messageTV;
-        CircleImageView circleImageView;
+        TextView senderMessageTV;
+        TextView chatUserMessageTV;
+
+        CircleImageView chatUserProfileImage;
+
+        TextView senderMessageTimeTV;
+        TextView chatUserMessageTimeTV;
+
+        LinearLayout senderLinearLayout;
+        LinearLayout chatUserLinearLayout;
 
         public MessageViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
 
-            messageTV = mView.findViewById(R.id.messageTextLayout);
-            circleImageView = mView.findViewById(R.id.messageProfileLayout);
+            senderMessageTV = mView.findViewById(R.id.senderProfileText);
+            chatUserMessageTV = mView.findViewById(R.id.chatUserTextMessage);
+
+            senderMessageTimeTV = mView.findViewById(R.id.senderProfileTextTime);
+            chatUserMessageTimeTV = mView.findViewById(R.id.chatUserTextTime);
+
+            chatUserProfileImage = mView.findViewById(R.id.chatUserProfileImage);
+
+            senderLinearLayout = mView.findViewById(R.id.senderLinearLayout);
+            chatUserLinearLayout = mView.findViewById(R.id.chatUserLinearLayout);
 
         }
 
-        public void setMessageText(String messageText) {
-            messageTV.setText(messageText);
+        public void setMessageForSender(String messageText, Boolean seen, String type, long time, Context applicationContext) {
+            senderLinearLayout.setVisibility(View.VISIBLE);
+            chatUserLinearLayout.setVisibility(View.GONE);
+            senderMessageTV.setText(messageText);/*
+            Calendar c = Calendar.getInstance();
+            senderMessageTimeTV.setText(c.getTime()+"");*/
         }
 
-        public void setUserProfileImage(String user_image, Context applicationContext) {
-            Picasso.with(applicationContext).load(user_image).placeholder(R.drawable.avatar).into(circleImageView);
-
-        }
-
-        public void setPropertiesForCurrentUser() {
-            messageTV.setBackgroundColor(Color.WHITE);
-            messageTV.setTextColor(Color.BLACK);
-        }
-
-        public void setPropertiesForOtherUser() {
-            messageTV.setBackgroundColor(Color.BLACK);
-            messageTV.setTextColor(Color.WHITE);
+        public void setMessageForChatUser(String messageText, Boolean seen, String type, long time, Context applicationContext) {
+            chatUserLinearLayout.setVisibility(View.VISIBLE);
+            senderLinearLayout.setVisibility(View.GONE);
+            chatUserMessageTV.setText(messageText);/*
+            Calendar c = Calendar.getInstance();
+            chatUserMessageTimeTV.setText(c.getTime()+"");*/
+            Picasso.with(applicationContext).load(userImage).placeholder(R.drawable.avatar).into(chatUserProfileImage);
         }
     }
 
     private void sendMessage() {
-        String message = mChatMessageView.getText().toString();
+        String message = mChatMessageView.getText().toString().trim();
         if (!TextUtils.isEmpty(message)) {
 
             String currentUserRef = "messages/" + mCurrentUserID + "/" + mChatUser;
