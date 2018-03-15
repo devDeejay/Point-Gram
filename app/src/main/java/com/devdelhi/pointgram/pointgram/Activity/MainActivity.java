@@ -30,10 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 
 public class MainActivity extends AppCompatActivity {
-
-    private Button mStartLocationServiceButton;
-    private Boolean serviceRunning = false;
-
+    
     private LinearLayout mapCard;
     private FirebaseAuth mAuth;
     private TextView tv;
