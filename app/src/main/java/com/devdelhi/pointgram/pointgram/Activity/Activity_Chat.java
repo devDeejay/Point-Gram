@@ -59,7 +59,6 @@ public class Activity_Chat extends AppCompatActivity {
     private String mCurrentUserID;
     private String messageText;
 
-    private ImageButton mChatAddButton;
     private ImageButton mChatSendButton;
     private EditText mChatMessageView;
     private DatabaseReference mMessageDatabaseForUser;
@@ -77,7 +76,6 @@ public class Activity_Chat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__chat);
-
 
         mChatUser = getIntent().getStringExtra("userID");
         mCurrentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -118,7 +116,6 @@ public class Activity_Chat extends AppCompatActivity {
         mProfileImage = findViewById(R.id.chatCustomBarImage);
 
         mChatSendButton = findViewById(R.id.sendTextIV);
-        mChatAddButton = findViewById(R.id.attachImagesTV);
         mChatMessageView = findViewById(R.id.chatMessageET);
 
 
@@ -149,7 +146,6 @@ public class Activity_Chat extends AppCompatActivity {
                 String type = model.getType();
                 long time = model.getTime();
                 String from = model.getFrom();
-                ;
 
                 if (from != null) {
                     if (from.equals(mCurrentUserID)) {

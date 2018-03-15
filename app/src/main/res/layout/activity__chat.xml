@@ -34,16 +34,7 @@
         android:layout_alignParentBottom="true"
         android:layout_height="50dp"
         android:id="@+id/linearLayout2">
-        
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_weight=" 1"
-            android:padding="10dp"
-            android:background="@color/whiteColor"
-            android:src="@drawable/ic_action_add"
-            android:id="@+id/attachImagesTV"
-            android:layout_height="match_parent" />
-        
+
         <EditText
             android:layout_width="0dp"
             android:layout_weight="5"

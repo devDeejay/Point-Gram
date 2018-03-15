@@ -53,28 +53,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity__main);
 
-        mAuth = FirebaseAuth.getInstance();
-        muserRef = FirebaseDatabase.getInstance().getReference().child("users_database").child(mAuth.getCurrentUser().getUid());
+        if (isUserSignedIn()) {
+            mAuth = FirebaseAuth.getInstance();
+            muserRef = FirebaseDatabase.getInstance().getReference().child("users_database").child(mAuth.getCurrentUser().getUid());
 
-        if (!isUserSignedIn()) {
+            mToolbar = findViewById(R.id.main_page_toolbar);
+            setSupportActionBar(mToolbar);
+            getSupportActionBar().setTitle("Point Gram");
+
+            //TABS
+
+            mViewPager = findViewById(R.id.view_pager);
+
+            mTabLayout = findViewById(R.id.main_page_tabs);
+
+            mSectionPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+            mViewPager.setAdapter(mSectionPagerAdapter);
+            mTabLayout.setupWithViewPager(mViewPager);
+        }
+        else {
             startActivity(new Intent(MainActivity.this, Activity_Start.class));
             finish();
         }
-
-        mToolbar = findViewById(R.id.main_page_toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Point Gram");
-
-        //TABS
-
-        mViewPager = findViewById(R.id.view_pager);
-
-        mTabLayout = findViewById(R.id.main_page_tabs);
-
-        mSectionPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
-        mViewPager.setAdapter(mSectionPagerAdapter);
-        mTabLayout.setupWithViewPager(mViewPager);
     }
 
     private void askForPermission(String permission, Integer requestCode) {
@@ -138,16 +139,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        stopLocationService();
-
         if (broadcastReceiver != null) {
             unregisterReceiver(broadcastReceiver);
         }
 
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            muserRef.child("online").setValue(ServerValue.TIMESTAMP);
+        if (isUserSignedIn()) {
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            if (currentUser != null) {
+                muserRef.child("online").setValue(ServerValue.TIMESTAMP);
+            }
         }
     }
 

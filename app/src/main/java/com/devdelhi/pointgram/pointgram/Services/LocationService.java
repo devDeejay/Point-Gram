@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +57,7 @@ public class LocationService extends Service {
                 Double lng = location.getLongitude();
                 Double alt = location.getAltitude();
                 float acc = location.getAccuracy();
-                float speed = location.getSpeed() * ( 18 / 5 );
+                Double speed = Double.valueOf(location.getSpeed() * ( 18 / 5 ));
                 String provider = location.getProvider();
 
                 Log.d(TAG, "Getting Data");
@@ -74,6 +75,7 @@ public class LocationService extends Service {
                 locationMap.put("acc", acc);
                 locationMap.put("speed", speed);
                 locationMap.put("provider", provider);
+                locationMap.put("lastUpdate", ServerValue.TIMESTAMP);
 
                 //Adding Friends To Database
 
@@ -118,10 +120,27 @@ public class LocationService extends Service {
                 startActivity(i);
             }
         };
+        if (isGPSOn()) {
+            locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 100 , listener); //Already Checked For Permissions
+        }
+        else {
+            locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 100 , listener); //Already Checked For Permissions
+        }
 
-        locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 0, listener);
+/*      locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 100, listener);*/
 
+
+    }
+
+    private boolean isGPSOn() {
+        final LocationManager manager = (LocationManager)getApplicationContext().getSystemService    (Context.LOCATION_SERVICE );
+        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) )
+            return false;
+        else
+            return true;
     }
 
     @Override

@@ -26,6 +26,11 @@ import com.devdelhi.pointgram.pointgram.Manifest;
 import com.devdelhi.pointgram.pointgram.R;
 import com.devdelhi.pointgram.pointgram.Services.LocationService;
 import com.devdelhi.pointgram.pointgram.Services.Service_GPS;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 
 public class Fragment_MyActivity extends Fragment {
@@ -38,6 +43,7 @@ public class Fragment_MyActivity extends Fragment {
     private static final String COARSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
     private Boolean mLocationPermissionGranted = false;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+    private DatabaseReference muserLocationRef;
 
     public Fragment_MyActivity() {
         // Required empty public constructor
@@ -70,10 +76,6 @@ public class Fragment_MyActivity extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        if (broadcastReceiver != null) {
-            getActivity().unregisterReceiver(broadcastReceiver);
-        }
     }
 
     private void getLocationPermissions() {
@@ -113,27 +115,33 @@ public class Fragment_MyActivity extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        getActivity().unregisterReceiver(broadcastReceiver); // Calls onReceive Method
+
+        if (broadcastReceiver != null) {
+            getActivity().unregisterReceiver(broadcastReceiver);
+        }
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        muserLocationRef = FirebaseDatabase.getInstance().getReference().child("users_database")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("location").child("live");
 
         View view = inflater.inflate(R.layout.fragment_my_activity, container, false);
         coordinatesTextView = view.findViewById(R.id.coordinatesTextView);
-        Button myCustomButton = view.findViewById(R.id.startMapForUser);
+        Button startServiceButton = view.findViewById(R.id.startMapForUser);
         Button stopServiceButton = view.findViewById(R.id.stopServiceButton);
 
         getLocationPermissions();
 
-        myCustomButton.setOnClickListener(new View.OnClickListener() {
+        startServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 if (mLocationPermissionGranted) {
                     startLocationService();
+                    muserLocationRef.setValue("true");
                     //Intent firstpage = new Intent(getActivity(),Activity_Maps.class);
                     //getActivity().startActivity(firstpage);
                 }
@@ -148,6 +156,7 @@ public class Fragment_MyActivity extends Fragment {
         stopServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                muserLocationRef.setValue("false");
                 Intent intent = new Intent(getActivity(), LocationService.class);
                 getActivity().stopService(intent);
             }

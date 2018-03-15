@@ -23,20 +23,21 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter{
 
         switch (position) {
             case 0:
-                Fragment_Alarms alarmFragments = new Fragment_Alarms();
-                return alarmFragments;
-
-            case 1:
                 Fragment_Chats chatFragment  = new Fragment_Chats();
                 return chatFragment;
 
-            case 2:
-                Fragment_Requests requestsFragment = new Fragment_Requests();
-                return requestsFragment;
+            case 1:
+                Fragment_Alarms alarmFragments = new Fragment_Alarms();
+                return alarmFragments;
 
-            case 3:
+            case 2:
                 Fragment_MyActivity myActivity = new Fragment_MyActivity();
                 return myActivity;
+
+
+            case 3:
+                Fragment_Requests requestsFragment = new Fragment_Requests();
+                return requestsFragment;
         }
 
         return null;
@@ -50,13 +51,13 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter{
     public CharSequence getPageTitle (int position) {
         switch (position) {
             case 0:
-                return "Alarms";
-            case 1:
                 return "Friends";
+            case 1:
+                return "Alarms";
             case 2:
-                return "Requests";
-            case 3:
                 return "Activity";
+            case 3:
+                return "Requests";
             default:
                 return null;
         }

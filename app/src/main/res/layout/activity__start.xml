@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="300dp"
             android:padding="80dp"
-            android:src="@drawable/white_text_logo" />
+            app:srcCompat ="@drawable/white_text_logo" />
 
     </LinearLayout>
 
