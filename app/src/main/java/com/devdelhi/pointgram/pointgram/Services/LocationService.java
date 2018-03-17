@@ -95,9 +95,6 @@ public class LocationService extends Service {
                 intent.putExtra("lng", lng+"");
                 Log.d(TAG, "Sent Data " + lat + " , " + lng);
 
-                ///Log.d(TAG,  "Lat " + lat + " Lng " + lng + " Alt " + alt + " Acc " + acc + " Speed " + speed + " Provider " + provider);
-
-                //3.Send As Broadcast
                 sendBroadcast(intent);
 
                 Log.d(TAG, "-------Broadcast Sent From GPS Service------");
@@ -119,7 +116,7 @@ public class LocationService extends Service {
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
             }
-        };
+        };/*
         if (isGPSOn()) {
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 100 , listener); //Already Checked For Permissions
@@ -128,11 +125,9 @@ public class LocationService extends Service {
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 30000, 100 , listener); //Already Checked For Permissions
         }
-
-/*      locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 100, listener);*/
-
-
+*/
+      locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 100, listener);
     }
 
     private boolean isGPSOn() {

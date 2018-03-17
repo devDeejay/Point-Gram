@@ -95,8 +95,10 @@ public class Fragment_Chats extends Fragment {
                                 Intent intent = new Intent(getActivity(), Activity_Chat.class);
                                 intent.putExtra("userID", userID);
                                 Log.d(TAG, "Clicked on userID " + userID);
-/*                                intent.putExtra("userName", name);
-                                intent.putExtra("userImage", image);*/
+                                /*
+                                intent.putExtra("userName", name);
+                                intent.putExtra("userImage", image);
+                                */
                                 startActivity(intent);
                             }
                         });

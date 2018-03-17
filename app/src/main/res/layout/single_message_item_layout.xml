@@ -4,11 +4,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/messageSingleLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="2dp"
-    >
+    android:padding="2dp">
 
     <LinearLayout
-        android:visibility="invisible"
+        android:visibility="visible"
         android:id="@+id/chatUserLinearLayout"
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -17,8 +16,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/chatUserProfileImage"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/avatar" />
 
         <TextView
@@ -26,11 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/message_text_background"
-            android:padding="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
             android:layout_marginLeft="10dp"
             android:text="TextView"
             android:textColor="@color/whiteColor"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:visibility="invisible"
@@ -45,7 +47,7 @@
 
 
     <LinearLayout
-        android:visibility="invisible"
+        android:visibility="visible"
         android:id="@+id/senderLinearLayout"
         android:layout_width="match_parent"
         android:gravity="end"
@@ -69,11 +71,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/sender_message_text_background"
-            android:padding="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
             android:layout_marginLeft="10dp"
             android:text="TextView"
             android:textColor="@color/colorPrimary"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
 
     </LinearLayout>

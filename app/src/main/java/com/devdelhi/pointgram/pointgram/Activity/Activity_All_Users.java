@@ -42,7 +42,7 @@ public class Activity_All_Users extends AppCompatActivity {
         mUsersList = findViewById(R.id.recyclerView);
         mToolbar = findViewById(R.id.allusers_toolbars);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("All Users");
+        getSupportActionBar().setTitle("Add More Friends");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("users_database");

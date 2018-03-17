@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Bring Vegetables"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/blackColor"
         android:textSize="20dp"
         android:textStyle="bold" />
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Alpha 1, C Market, Greater Noida"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/blackColor"
         android:textSize="16sp" />
 
     <TextView
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Radius Set : 200 meters"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/blackColor"
         android:textSize="16sp" />
 
     <TextView
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:text="People Involved : 3"
         android:layout_marginTop="10dp"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/blackColor"
         android:textSize="16sp" />
 
     <LinearLayout

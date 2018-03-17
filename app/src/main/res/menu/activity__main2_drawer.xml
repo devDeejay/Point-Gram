@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/my_account_settings"
+            android:title="My Profile" />
+
+        <item
+            android:id="@+id/my_friends"
+            android:title="My Friends" />
+        <item
+            android:id="@+id/my_all_friends_map"
+            android:title="My Friends Map" />
+
+        <item
+            android:id="@+id/my_create_alarm"
+            android:title="Create Location Alarm" />
+
+        <item
+            android:id="@+id/my_add_friends"
+            android:title="Add More Friends" />
+
+        <item
+            android:id="@+id/my_logout"
+            android:title="Logout" />
+
+    </group>
+</menu>

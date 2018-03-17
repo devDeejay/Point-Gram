@@ -18,11 +18,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Activity_SignUp extends AppCompatActivity {
 
@@ -123,7 +126,7 @@ public class Activity_SignUp extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser currentUser, String displayName) {
-        FirebaseUser mDatabaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        final FirebaseUser mDatabaseUser = FirebaseAuth.getInstance().getCurrentUser();
         String uid = currentUser.getUid();
         String email = currentUser.getEmail();
         String name = displayName;
@@ -131,24 +134,39 @@ public class Activity_SignUp extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users_database").child(uid); //Getting Reference To Users Child
 
+        final Map locationMap = new HashMap();
+        locationMap.put("lat", "0");
+        locationMap.put("lng", "0");
+        locationMap.put("alt", "0");
+        locationMap.put("speed", "0");
+        locationMap.put("provider", "NETWORK");
+        locationMap.put("lastUpdate", ServerValue.TIMESTAMP);
+
         HashMap<String, String> usermap = new HashMap<>();
         usermap.put("user_name", displayName);
         usermap.put("user_email", email);
         usermap.put("user_status", "Hey There, I am on Point Gram.");
         usermap.put("user_image", "Default");
         usermap.put("user_thumbnail", "Default");
-        usermap.put("lat_lng", "NA");
         usermap.put("device_token", deviceToken);
 
-        mProgressDialog.dismiss();
         mDatabase.setValue(usermap).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isComplete()) {
-                    startActivity(new Intent(Activity_SignUp.this, MainActivity.class));
-                    mProgressDialog.dismiss();
-                    finish();
+                    mDatabase.child("location").updateChildren(locationMap, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if (databaseError == null) {
+                                Log.d(TAG, "Location Updated On Firebase");
+                                startActivity(new Intent(Activity_SignUp.this, MainActivity.class));
+                                mProgressDialog.dismiss();
+                                finish();
+                            }
+                        }
+                    });
                 }
+
                 else {
                     mProgressDialog.dismiss();
                     Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "We Couldn't Save Your Details. Please, Check Your Internet Connectivity.", Snackbar.LENGTH_LONG);

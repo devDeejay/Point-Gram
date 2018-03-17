@@ -10,7 +10,7 @@
         android:title="All Users"/>
 
     <item
-        android:id="@+id/maps"
+        android:id="@+id/friends_map"
         android:title="Maps"/>
 
     <item

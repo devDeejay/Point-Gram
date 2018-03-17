@@ -3,32 +3,198 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="#1a1a1a"
     android:layout_height="match_parent">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </ScrollView>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:padding="20dp"
-        android:id="@+id/coordinatesTextView"
-        android:text="Your Co-ordinates Will Be Updated Here Once You Start Service.\n\n " />
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:fontFamily="sans-serif-condensed"
+        android:id="@+id/helpText"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="@string/activity_service_text"
+        android:textAlignment="center"
+        android:textColor="@color/whiteColor"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_marginTop="10dp"
+            android:id="@+id/xlocationDetailsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="400dp"
+                android:layout_gravity="center"
+                android:layout_height="1dp"
+                android:background="#cccccc"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Your Location Updates"
+                android:padding="10dp"
+                android:textSize="20sp"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textColor="@color/whiteColor"
+                />
+
+            <LinearLayout
+                android:layout_width="400dp"
+                android:layout_gravity="center"
+                android:layout_height="1dp"
+                android:background="#cccccc"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:background="#883a3a3a"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Location"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/xprofileLocationTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:text="23 N 34 E"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#883a3a3a"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Altitude"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/xprofileAltitudeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:text="45 Meters"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#883a3a3a"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Speed"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/xprofileSpeedTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:text="40 Km / H"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="#883a3a3a"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="start"
+                    android:text="Provider"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/xprofileProviderTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:text="GPS"
+                    android:textColor="@color/whiteColor"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:id="@+id/xprofileLastKnownTimeTV"
+                android:text="Last Updated : "
+                android:textAlignment="center"
+                android:textColor="@color/whiteColor"/>
+
+        </LinearLayout>
 
     <Button
         android:id="@+id/startMapForUser"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/stopServiceButton"
         android:layout_alignParentStart="true"
-        android:backgroundTint="@color/colorAccent"
-        android:padding="10dp"
+        android:padding="20dp"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:text="Start Service"
         android:textColor="@color/whiteColor" />
 
@@ -36,10 +202,10 @@
         android:id="@+id/stopServiceButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/startMapForUser"
-        android:layout_alignParentStart="true"
-        android:backgroundTint="@color/colorAccent"
-        android:padding="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="20dp"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:text="Stop Service"
         android:textColor="@color/whiteColor" />
 

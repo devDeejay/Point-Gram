@@ -19,11 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activity.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service android:name=".Services.Service_GPS" />
@@ -53,7 +48,20 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".Activity.Activity_Friends" />
-        <activity android:name=".Activity.Activity_Chat"></activity>
+        <activity android:name=".Activity.Activity_Chat" />
+        <activity android:name=".Activity.Activity_Friends_Maps" />
+        <activity
+            android:name=".Activity.Activity_MainActivity"
+            android:label="@string/title_activity__main"
+            android:theme="@style/AppTheme">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>
