@@ -1,6 +1,5 @@
 package com.devdelhi.pointgram.pointgram.Fragments;
 
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;

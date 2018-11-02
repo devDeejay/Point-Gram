@@ -52,7 +52,7 @@
         <activity android:name=".Activity.Activity_Friends_Maps" />
         <activity
             android:name=".Activity.Activity_MainActivity"
-            android:label="@string/title_activity__main"
+            android:label="Point Gram"
             android:theme="@style/AppTheme">
 
             <intent-filter>
