@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:background="@color/whiteColor"
-    tools:context="com.devdelhi.pointgram.pointgram.Activity.MainActivity">
+    tools:context="com.devdelhi.pointgram.pointgram.activity.MainActivity">
 
     <include
         android:id="@+id/main_page_toolbar"

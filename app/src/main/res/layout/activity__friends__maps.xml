@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.devdelhi.pointgram.pointgram.Activity.Activity_Friends_Maps">
+    tools:context="com.devdelhi.pointgram.pointgram.activity.Activity_Friends_Maps">
 
 </android.support.constraint.ConstraintLayout>

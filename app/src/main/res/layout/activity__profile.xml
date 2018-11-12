@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1a1a1a"
-    tools:context="com.devdelhi.pointgram.pointgram.Activity.Activity_Account_Settings">
+    tools:context="com.devdelhi.pointgram.pointgram.activity.Activity_Account_Settings">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -243,7 +243,7 @@
                     android:name="com.google.android.gms.maps.SupportMapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="400dp"
-                    tools:context="com.devdelhi.pointgram.pointgram.Activity.Activity_Maps" />
+                    tools:context="com.devdelhi.pointgram.pointgram.activity.Activity_Maps" />
 
             </LinearLayout>
 

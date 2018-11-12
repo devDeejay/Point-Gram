@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whiteColor"
-    tools:context="com.devdelhi.pointgram.pointgram.Activity.Activity_SignUp">
+    tools:context="com.devdelhi.pointgram.pointgram.activity.Activity_SignUp">
 
     <include
         android:id="@+id/signin_toolbar"

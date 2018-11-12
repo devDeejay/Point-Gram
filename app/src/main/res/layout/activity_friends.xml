@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.devdelhi.pointgram.pointgram.Activity.Activity_Friends">
+    tools:context="com.devdelhi.pointgram.pointgram.activity.Activity_Friends">
 
     <include
         android:id="@+id/friends_activity_toolbar"

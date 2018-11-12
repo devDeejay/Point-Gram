@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#dddddd"
-    tools:context="com.devdelhi.pointgram.pointgram.Activity.Activity_Chat">
+    tools:context="com.devdelhi.pointgram.pointgram.activity.Activity_Chat">
 
     <include layout="@layout/app_bar_layout" android:id="@+id/chat_app_bar"/>
 

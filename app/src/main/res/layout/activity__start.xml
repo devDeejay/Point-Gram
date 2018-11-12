@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:theme="@style/Theme.Design.NoActionBar"
     android:background="@color/colorPrimary"
-    tools:context="com.devdelhi.pointgram.pointgram.Activity.Activity_Start">
+    tools:context="com.devdelhi.pointgram.pointgram.activity.Activity_Start">
 
     <LinearLayout
         android:orientation="vertical"
