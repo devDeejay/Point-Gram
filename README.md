@@ -1,6 +1,6 @@
 # Point Gram
 
-An app that lets you t
+An app that lets you
 * Track location of your friends and family,
 * Set Location Based Reminder
 * Chat with your friends and family.
